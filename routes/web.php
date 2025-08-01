@@ -23,3 +23,4 @@ Route::post('/products/{product}', [ProductController::class, 'update'])->name('
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 Route::post('/products/{product}/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');

@@ -40,4 +40,13 @@ class TransactionController extends Controller
 
         return back()->with('success', 'Transaksi berhasil ditambahkan.');
     }
+    
+
+    public function index(Request $request)
+    {
+        $order = $request->query('order', 'asc');
+        $transactions = Transaction::with('product')->orderBy('date', $order)->get();
+
+        return view('transactions.list', compact('transactions', 'order'));
+    }
 }
