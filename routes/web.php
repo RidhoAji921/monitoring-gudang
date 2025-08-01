@@ -17,3 +17,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/products/list', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/{product}/manage', [ProductController::class, 'show'])->name('products.show');
+Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');

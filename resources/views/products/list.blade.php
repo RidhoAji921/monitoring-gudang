@@ -17,7 +17,9 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Produk">
+                <form method="GET" action="{{ route('products.index') }}">
+                <input type="text" name="search" value="{{ $search }}" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Produk">
+                </form>
             </div>
         </div>
         <div>
@@ -63,7 +65,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($products as $product)
+                @forelse ($products as $product)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $product->product_code }}
@@ -78,10 +80,16 @@
                         {{ $product->quantity }}
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <a href="#{{ $product->product_code }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Manage</a>
+                        <a href="/products/{{ $product->product_code }}/manage" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Manage</a>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td colspan="5" class="px-6 py-4 text-center">
+                        Produk tidak ditemukan
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -11,10 +11,18 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return view('products.list', compact('products'));
+        $search = $request->query('search');
+
+        $products = Product::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('product_code', 'like', "%{$search}%")
+                    ->orWhere('uom', 'like', "%{$search}%");
+            })
+            ->get();
+        return view('products.list', compact('products', 'search'));
     }
 
     /**
@@ -59,32 +67,32 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return view('products.manage', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function update(Request $request, Product $product)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'uom' => 'required|string|max:50',
+        ]);
+        $product->update($request->only(['name', 'uom']));
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return back()->with('success', 'Produk berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
     }
 }
