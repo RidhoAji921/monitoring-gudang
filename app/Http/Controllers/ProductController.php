@@ -67,9 +67,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Request $request, Product $product)
     {
-        return view('products.manage', compact('product'));
+        $order = $request->query('order', 'asc');
+        $latestTransactionDate = $product->transactions()->max('date');
+        $transactions = $product->transactions()->orderBy('date', $order)->get();
+        return view('products.manage', compact('product', 'latestTransactionDate', 'transactions', 'order'));
     }
 
     /**

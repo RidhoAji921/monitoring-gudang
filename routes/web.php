@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('index');
@@ -20,3 +21,5 @@ Route::post('/products/store', [ProductController::class, 'store'])->name('produ
 Route::get('/products/{product}/manage', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+Route::post('/products/{product}/transactions', [TransactionController::class, 'store'])->name('transactions.store');
