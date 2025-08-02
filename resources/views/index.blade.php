@@ -29,7 +29,58 @@
         </a>
         @endauth
     </div>
+    @auth
+    <div class="px-4">
+        <p class="text-xl text-gray-900 dark:text-white">Halo, {{ Auth::user()->name }}!</p>
+        <canvas id="transactionChart" class="w-full h-20"></canvas>
+    </div>
+    @endauth
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+<script>
+  fetch("{{ route('chart.data') }}")
+    .then(response => response.json())
+    .then(data => {
+      const labels = data.map(row => row.date);
+      const masuk = data.map(row => row.masuk);
+      const keluar = data.map(row => row.keluar);
+
+      const ctx = document.getElementById('transactionChart');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Barang Masuk',
+              data: masuk,
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              fill: true,
+              tension: 0.3
+            },
+            {
+              label: 'Barang Keluar',
+              data: keluar,
+              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              fill: true,
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+</script>
 </body>
 </html>

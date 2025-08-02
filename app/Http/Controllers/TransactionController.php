@@ -49,4 +49,14 @@ class TransactionController extends Controller
 
         return view('transactions.list', compact('transactions', 'order'));
     }
+
+    public function chartData()
+    {
+        $data = Transaction::selectRaw('date, SUM(`in`) as masuk, SUM(`out`) as keluar')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json($data);
+    }
 }

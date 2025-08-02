@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('index');
@@ -27,4 +28,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/products/{product}/transactions', [TransactionController::class, 'store'])->name('transactions.store');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/user/dashboard', [UserController::class, 'showDashboard'])->name('user.index');
+    Route::post('/user/update_password', [UserController::class, 'changePassword'])->name('user.update_password');
 });
+Route::get('/chart/data', [TransactionController::class, 'chartData'])->name('chart.data');
